@@ -18,6 +18,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import os
+import sys
+
+ROOT_DIR = os.path.abspath(os.path.dirname(__file__) + '/../' )
 
 APP_ID = "app.hub4linux"
 APP_NAME = "hub:linux"

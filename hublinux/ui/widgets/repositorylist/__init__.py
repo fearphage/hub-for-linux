@@ -27,18 +27,16 @@ from gi.repository import Gtk, GLib
 LOG = logging.getLogger(__name__)
 
 class RepositoryList(Gtk.Box):
-
     def __init__(self, sourceProvider):
         super(RepositoryList, self).__init__()
         self.sourceProvider = sourceProvider
 
         self.searchEntry = Gtk.SearchEntry()
-        self.sourceStore = Gtk.ListStore(str)
 
-        self.sourceList = Gtk.TreeView(self.sourceStore.filter_new())
+        self.sourceList = Gtk.Box()
+        self.sourceList.set_orientation(Gtk.Orientation.VERTICAL)
 
         self.set_orientation(Gtk.Orientation.VERTICAL)
-        self.sourceList.set_headers_visible(False)
 
         self.__initUI()
         self.sourceProvider.connect('add-repository', self.__onAddRepository)
@@ -59,35 +57,59 @@ class RepositoryList(Gtk.Box):
         LOG.info('onUpdateRepo(%s)' % id)
 
     def __addRepository(self, repo):
+        widget = self.__getRepoWidget(repo)
+
+        self.sourceList.pack_start(widget, False, True, 3)
+        self.sourceList.show_all()
+
+    def __getRepoWidget(self, repo):
+        box = Gtk.Box()
+
         text = "<span weight=\"bold\">%s</span>\n<span size=\"smaller\" weight=\"light\">%s</span>" % (
             repo.name, repo.description)
-        self.sourceStore.append([text])
 
-        self.sourceList.set_model(self.sourceStore.filter_new())
-        self.__setFilter()
-        self.sourceList.show_all()
+        label = Gtk.Label()
+        label.set_markup(text)
+        box.pack_start(label, False, True, 0)
+        box.pack_start(Gtk.Label(), True, True, 0) # left align
+
+        button = Gtk.Button()
+        image = Gtk.Image()
+        image.set_from_stock(Gtk.STOCK_GO_FORWARD, Gtk.IconSize.LARGE_TOOLBAR)
+        button.set_image(image)
+        button.set_relief(Gtk.ReliefStyle.NONE)
+        box.pack_start(button, False, True, 0)
+
+        def onClick(self, btn, repo):
+            repo.doClone("/tmp/test")
+
+        button.connect('clicked', onClick, self, repo)
+
+        frame = Gtk.EventBox()
+        frame.set_border_width(3)
+        box.set_border_width(5)
+        frame.add(box)
+        frame.set_name("repository")
+        return frame
 
     def __setFilter(self):
         def filter_func(model, iter, *args):
             search = '.*' + self.searchEntry.get_text().lower() + '.*'
             return re.match(search, model.get_value(iter, 0).lower()) is not None
+
         self.sourceList.get_model().set_visible_func(filter_func)
 
     def __onChange(self, data):
-            if isinstance(self.sourceList.get_model(), Gtk.TreeModelFilter):
-                self.sourceList.get_model().refilter()
+        pass
 
     def __initUI(self):
-        self.pack_start(self.searchEntry, False, True, 0)
-
-        # text
-        renderer = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn('', renderer, markup=0)
-        column.set_property('expand', True)
-        self.sourceList.append_column(column)
+        align = Gtk.Alignment()
+        align.add(self.searchEntry)
+        align.set_padding(0, 0, 5, 5)
+        self.pack_start(align, False, True, 0)
 
         sourceScroll = Gtk.ScrolledWindow()
-        sourceScroll.add(self.sourceList)
+        sourceScroll.add_with_viewport(self.sourceList)
         self.pack_start(sourceScroll, True, True, 0)
 
     def __loadList(self):

@@ -24,7 +24,7 @@ from gi.repository import Gio
 import os
 import keyring # use gtk 2.0 api -> bad!
 
-from hublinux.Constant import APP_ID
+from hublinux.Constant import APP_ID, ROOT_DIR
 
 class HubLinuxConfig(object):
     def __new__(type, *args):
@@ -35,7 +35,7 @@ class HubLinuxConfig(object):
     def __init__(self):
         if not '_ready' in dir(self):
             schema_source = Gio.SettingsSchemaSource.new_from_directory(
-                os.path.expanduser("./data/schema"),
+                os.path.expanduser(ROOT_DIR + "/data/schema"),
                 Gio.SettingsSchemaSource.get_default(),
                 False,
             )

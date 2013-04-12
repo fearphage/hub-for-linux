@@ -100,7 +100,7 @@ class SourceList(Gtk.Box):
     def __createSourceButton(self, label, image):
         sourceBtn = Gtk.RadioButton()
         sourceBtn.join_group(self.groupBtn)
-        sourceBtn.set_label(label)
+        sourceBtn.set_label(" " + label + " ")
         sourceBtn.set_mode(False) # disable draw-indicator
         sourceBtn.set_relief(Gtk.ReliefStyle.NONE)
 

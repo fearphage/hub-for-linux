@@ -19,7 +19,7 @@
 # this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-import threading
+import git
 
 from gi.repository import GLib
 
@@ -76,3 +76,6 @@ class GithubRepositoryProvider(RepositoryProvider):
     @property
     def description(self):
         return self.repository.description
+
+    def doClone(self, dir):
+        return git.Repo.clone_from(self.repository.git_url, dir)

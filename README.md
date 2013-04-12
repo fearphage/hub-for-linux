@@ -10,7 +10,7 @@ todo
 ====
  - [ ] get a working setup.py
  - [ ] tests
-
+ 
 install
 =======
 
@@ -21,7 +21,7 @@ For chrome:
  * Drag & Drop ```userscript/github.userscript.js``` into the extension tab.
 
  For FF:
-  * use Greasemonkey (i don't test it)
+  * use Greasemonkey (untested, need feedback)
 
 install desktop app
 -------------------
