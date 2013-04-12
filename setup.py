@@ -32,6 +32,7 @@ setuptools.setup(
     packages=[
         "assets",
         "data",
+        "data.schema",
         "hublinux",
         "hublinux.backend",
         "hublinux.backend.ProviderImpl",

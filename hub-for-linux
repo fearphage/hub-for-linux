@@ -24,7 +24,7 @@
 import sys
 import logging
 
-from gi.repository import GLib
+from gi.repository import GLib, Gio
 from hublinux.ui.app import Application
 
 # DEBUG
@@ -33,5 +33,6 @@ logging.basicConfig(level=logging.INFO)
 GLib.threads_init()
 
 if __name__ == "__main__":
-    exit_status = Application().run(sys.argv)
+    app = Application()
+    exit_status = app.run( sys.argv ) 
     sys.exit(exit_status)

@@ -1,2 +1,3 @@
 *.pyc
+build/
 hub_linux.egg-info
