@@ -68,7 +68,7 @@ class GithubRepositoryProvider(RepositoryProvider):
     @property
     def id(self):
         return self.repository.id
-
+        
     @property
     def name(self):
         return self.repository.full_name
@@ -76,6 +76,10 @@ class GithubRepositoryProvider(RepositoryProvider):
     @property
     def description(self):
         return self.repository.description
+
+    @property
+    def cloneName(self):
+        return self.repository.name
 
     def doClone(self, dir):
         return git.Repo.clone_from(self.repository.git_url, dir)

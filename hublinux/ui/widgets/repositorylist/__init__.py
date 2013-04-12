@@ -24,6 +24,8 @@ import logging
 
 from gi.repository import Gtk, GLib
 
+from hublinux.ui.dialog.CloneDialog import CloneDialog
+
 LOG = logging.getLogger(__name__)
 
 class RepositoryList(Gtk.Box):
@@ -81,7 +83,10 @@ class RepositoryList(Gtk.Box):
         box.pack_start(button, False, True, 0)
 
         def onClick(self, btn, repo):
-            repo.doClone("/tmp/test")
+            dlg = CloneDialog(repo)
+            response = dlg.run();
+
+            dlg.destroy()
 
         button.connect('clicked', onClick, self, repo)
 
