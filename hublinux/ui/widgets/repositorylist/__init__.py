@@ -67,6 +67,15 @@ class RepositoryList(Gtk.Box):
     def __getRepoWidget(self, repo):
         box = Gtk.Box()
 
+        icon = Gtk.Image();
+        if repo.private:
+            if Gtk.IconTheme.get_default().has_icon("emblem-personal"):
+                icon.set_from_pixbuf(Gtk.IconTheme.get_default().load_icon("emblem-personal", 32,0))
+        else:
+            if Gtk.IconTheme.get_default().has_icon("emblem-people"):
+                icon.set_from_pixbuf(Gtk.IconTheme.get_default().load_icon("emblem-people", 32,0))
+        box.pack_start(icon, False, True, 0)
+
         text = "<span weight=\"bold\">%s</span>\n<span size=\"smaller\" weight=\"light\">%s</span>" % (
             repo.name, repo.description)
 

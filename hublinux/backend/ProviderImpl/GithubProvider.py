@@ -78,6 +78,10 @@ class GithubRepositoryProvider(RepositoryProvider):
         return self.repository.description
 
     @property
+    def private(self):
+        return self.repository.private
+
+    @property
     def cloneName(self):
         return self.repository.name
 
