@@ -17,12 +17,17 @@
 # this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+import logging
+from gettext import gettext as _
+
 from gi.repository import Gtk
 
-from hublinux.Constant import APP_NAME, WINDOW_SIZE
+from hublinux.Constant import APP_NAME, ROOT_DIR, WINDOW_SIZE
 from hublinux.ui.app.StatusIcon import StatusIcon
 from hublinux.ui.widgets.toolbar import Toolbar
 from hublinux.ui.panel.MainPanel import MainPanel
+
+LOG = logging.getLogger(__name__)
 
 class Window(Gtk.ApplicationWindow):
 
@@ -37,7 +42,7 @@ class Window(Gtk.ApplicationWindow):
 
         self.set_default_size(WINDOW_SIZE[0], WINDOW_SIZE[1])
         self.set_position(Gtk.WindowPosition.CENTER)
-        self.set_icon_from_file("./assets/icon.png")
+        self.set_icon_from_file(ROOT_DIR + "/data/images/icon.png")
         self.set_title(APP_NAME)
 
         self.__initUI()
@@ -58,3 +63,15 @@ class Window(Gtk.ApplicationWindow):
     def __onHide(self, *args):
         self.hide()
         return args
+
+    def openRepository(self, name):
+        LOG.info("Open Repositor:" + name)
+
+        messageDlg = Gtk.MessageDialog(
+            self,
+            Gtk.DialogFlags.MODAL,
+            Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK,
+            _('Try to open: %s.') % name)
+        messageDlg.run()
+        messageDlg.destroy()

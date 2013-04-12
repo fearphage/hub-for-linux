@@ -33,7 +33,7 @@ class WelcomePage(Gtk.Grid):
 
     def __initUi(self):
         self.logoImage = Gtk.Image()
-        self.logoImage.set_from_file("./assets/logo.png")
+        self.logoImage.set_from_file("./data/images/logo.png")
         self.attach(self.logoImage, 0, 0, 1, 1)
 
         self.welcomeText = Gtk.Label(_('Welcome to hub:linux! You need to setup your github account first.'))

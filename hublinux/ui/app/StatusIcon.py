@@ -21,13 +21,15 @@ from gettext import gettext as _
 
 from gi.repository import Gtk
 
+from hublinux.Constant import ROOT_DIR
+
 class StatusIcon(Gtk.StatusIcon):
     def __init__(self, app):
         super(Gtk.StatusIcon, self).__init__()
         self.application = app
         self.menu = Gtk.Menu()
 
-        self.set_from_file("./assets/icon.png")
+        self.set_from_file(ROOT_DIR + "/data/images/icon.png")
         self.__initMenu()
         self.connect("popup-menu", self.__onMenuShow)
 

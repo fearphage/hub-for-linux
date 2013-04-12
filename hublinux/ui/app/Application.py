@@ -21,9 +21,9 @@ import os
 import logging
 from gettext import gettext as _
 
-from gi.repository import GLib, Gtk, Notify
+from gi.repository import GLib, Gtk, Gio, Notify
 
-from hublinux.Constant import APP_ID, APP_NAME
+from hublinux.Constant import APP_ID, APP_NAME, ROOT_DIR
 
 from hublinux.ui.menu.AppMenu import AppMenu
 from hublinux.ui.app.Window import Window
@@ -40,22 +40,31 @@ class Application(Gtk.Application):
 
         self.appMenu = AppMenu(self)
         self.set_application_id(APP_ID)
+        self.set_flags(Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
+
+        # BUG: signal 'open' can't handle well
+        # Workaround: parse cli's self
+        self.connect('command-line', self.__onCommands)
 
     @property
     def window(self):
         return self.appWindow
 
+    def __onCommands(self, app, args):
+        # try to start gui
+        self.do_activate()
+
+        #parse args
+        argv = args.get_arguments()
+        if(len(argv) > 1):
+            self.window.openRepository(argv[1])
+
+        return False
+        
     def do_activate(self):
         # only one instance
         if len(self.get_windows()) > 0:
-            image = os.path.realpath("./assets/icon.png")
-            Notify.init(APP_NAME)
-            notification = Notify.Notification.new(
-                APP_NAME,
-                _('Another instance of %(name)s is running. You can start %(name)s only once.') % {'name': APP_NAME},
-                image
-            )
-            notification.show()
+            self.window.present(); # main window to foreground
             return
 
         # start setup if no login
@@ -69,6 +78,13 @@ class Application(Gtk.Application):
         if HubLinuxConfig().hasLogin:
             self.set_app_menu(self.appMenu)
             self.appWindow = Window(self)
+
+            self.provider = Gtk.CssProvider()
+            self.provider.load_from_path(ROOT_DIR + "/data/style.css")
+            screen = self.appWindow.get_screen()
+
+            self.appWindow.get_style_context().add_provider_for_screen(screen, self.provider, 1000)
+
             self.appWindow.show_all()
         else:
             LOG.warning("No login credentials -> Exit")
