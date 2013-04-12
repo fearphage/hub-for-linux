@@ -8,7 +8,24 @@ see [REQUIREMENTS](https://github.com/pgolm/hub-for-linux/blob/master/REQUIREMEN
 
 todo
 ====
- - [ ] create a todo-list
+ - [ ] get a working setup.py
+ - [ ] tests
+
+install
+=======
+
+install browser extension
+-------------------------
+For chrome:
+ * Open [chrome://extensions/](chrome://extensions/)
+ * Drag & Drop ```userscript/github.userscript.js``` into the extension tab.
+
+ For FF:
+  * use Greasemonkey (i don't test it)
+
+install desktop app
+-------------------
+comming soons
 
 license (GPL v3)
 ================
