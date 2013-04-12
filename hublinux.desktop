@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/home/golm/Development/python/hub-for-linux/hub-for-linux %U
+Name[en_US]=hub:linux
+Comment[en_US]=A Github for Linux client.
+Name=hub:linux
+Comment=A Github for Linux client.
+Categories=Application;Development;
+MimeType=x-scheme-handler/github;x-scheme-handler/github-linux;

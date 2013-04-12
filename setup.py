@@ -30,8 +30,8 @@ setuptools.setup(
     author_email="golm.peter@gmail.com",
     url="https://github.com/pgolm/hub-for-linux",
     packages=[
-        "assets",
         "data",
+        "data.images",
         "data.schema",
         "hublinux",
         "hublinux.backend",
@@ -47,8 +47,8 @@ setuptools.setup(
         "hublinux.ui.widgets.toolbar",
     ],
     package_data={
-        'assets': ['*'],
-        'data': ['schema/*']},
+        'data': ['style.css', 'schema/*', 'images/*']
+        },
     py_modules=["hublinux"],
-    scripts=["hublinux.py"],
+    scripts=["hub-for-linux"],
 )
