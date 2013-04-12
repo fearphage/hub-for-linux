@@ -25,7 +25,8 @@ For chrome:
 
 install desktop app
 -------------------
-comming soons
+
+ * ```xdg-desktop-menu install hub-linux.desktop```
 
 license (GPL v3)
 ================
