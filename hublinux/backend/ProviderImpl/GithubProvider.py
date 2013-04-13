@@ -54,9 +54,11 @@ class GithubSourceProvider(SourceProvider):
 
     def _doScanRepositories(self):
         LoadingEventBus().start()
-        for repo in self.source.get_repos():
-            self._findRepository(repo)
-        LoadingEventBus().stop()
+        try:
+            for repo in self.source.get_repos():
+              self._findRepository(repo)
+        finally:
+            LoadingEventBus().stop()
 
     def _getRepositoryProvider(self, repo):
         return GithubRepositoryProvider(repo)
