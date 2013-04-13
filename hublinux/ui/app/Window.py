@@ -26,6 +26,11 @@ from hublinux.Constant import APP_NAME, ROOT_DIR, WINDOW_SIZE
 from hublinux.ui.app.StatusIcon import StatusIcon
 from hublinux.ui.widgets.toolbar import Toolbar
 from hublinux.ui.panel.MainPanel import MainPanel
+from hublinux.ui.dialog.CloneDialog import CloneDialog
+
+from hublinux.backend.Github import Github
+from hublinux.backend.ProviderImpl.GithubProvider import GithubRepositoryProvider
+
 
 LOG = logging.getLogger(__name__)
 
@@ -67,11 +72,36 @@ class Window(Gtk.ApplicationWindow):
     def openRepository(self, name):
         LOG.info("Open Repository:" + name)
 
-        messageDlg = Gtk.MessageDialog(
-            self,
-            Gtk.DialogFlags.MODAL,
-            Gtk.MessageType.INFO,
-            Gtk.ButtonsType.OK,
-            _('Try to open: %s.') % name)
-        messageDlg.run()
-        messageDlg.destroy()
+        #FIXME: first QUICK&DIRTY implementation
+        #need better url parsing
+        startPos = name.find("github.com/")
+        if startPos > -1:
+            parts = name[startPos:-1].split('/')
+
+            userName = parts[1]
+            repoName = parts[2]
+            try:
+                rawRepo = Github().getGithub().get_user(userName).get_repo(repoName)
+                repo = GithubRepositoryProvider(rawRepo)
+                dlg = CloneDialog(repo)
+                dlg.run()
+                dlg.destroy()
+
+            except e:
+                messageDlg = Gtk.MessageDialog(
+                    self,
+                    Gtk.DialogFlags.MODAL,
+                    Gtk.MessageType.ERROR,
+                    Gtk.ButtonsType.OK,
+                    _('Something went wrong with %s.') % name)
+                messageDlg.run()
+                messageDlg.destroy()
+        else:
+            messageDlg = Gtk.MessageDialog(
+                self,
+                Gtk.DialogFlags.MODAL,
+                Gtk.MessageType.ERROR,
+                Gtk.ButtonsType.OK,
+                _('Wrong URL: %s.') % name)
+            messageDlg.run()
+            messageDlg.destroy()
