@@ -65,7 +65,7 @@ class Window(Gtk.ApplicationWindow):
         return args
 
     def openRepository(self, name):
-        LOG.info("Open Repositor:" + name)
+        LOG.info("Open Repository:" + name)
 
         messageDlg = Gtk.MessageDialog(
             self,
