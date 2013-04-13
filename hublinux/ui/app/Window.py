@@ -76,10 +76,11 @@ class Window(Gtk.ApplicationWindow):
         #need better url parsing
         startPos = name.find("github.com/")
         if startPos > -1:
-            parts = name[startPos:-1].split('/')
+            parts = name[startPos:].split('/')
 
             userName = parts[1]
             repoName = parts[2]
+
             try:
                 rawRepo = Github().getGithub().get_user(userName).get_repo(repoName)
                 repo = GithubRepositoryProvider(rawRepo)
@@ -87,7 +88,7 @@ class Window(Gtk.ApplicationWindow):
                 dlg.run()
                 dlg.destroy()
 
-            except e:
+            except Exception:
                 messageDlg = Gtk.MessageDialog(
                     self,
                     Gtk.DialogFlags.MODAL,
